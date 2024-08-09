@@ -13,6 +13,10 @@ const LogInScreen = () => {
     navigation.goBack();
   };
 
+  const handleSignUp = () => {
+    navigation.navigate("SignUp")
+  };
+
   return (
     <View>
       <TouchableOpacity style={styles.backButtonWrapper} onPress={handleGoBack}>
@@ -86,7 +90,9 @@ const LogInScreen = () => {
 
         <View style={styles.footerContainer}>
           <Text style={styles.accountText}>Don't have an account?</Text>
-          <Text style={styles.signupText}>Sign-up</Text>
+          <TouchableOpacity onPress={handleSignUp}>
+            <Text style={styles.signupText}>Sign-up</Text>
+          </TouchableOpacity>
 
         </View>
 
