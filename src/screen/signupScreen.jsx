@@ -16,12 +16,10 @@ const SignUpScreen = () => {
   };
 
   const handleLogIn = () => {
-    navigation.navigate("LogIn")
+    navigation.navigate("LogIn");
   };
 
-
   // Define validation schema using Yup
-  
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
@@ -144,36 +142,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
-  backButtonWrapper:{
+  backButtonWrapper: {
     height: 35,
     width: 35,
     backgroundColor: colors.gray,
     borderRadius: 20,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
-
-  textContainer:{
+  textContainer: {
     marginVertical: 10,
     marginLeft: 20,
-
   },
-
-  headingText:{
-    fontSize:30,
+  headingText: {
+    fontSize: 30,
     color: colors.primary,
     fontFamily: fonts.SemiBold,
-
   },
-
-  formContainer:{
+  formContainer: {
     marginTop: -10,
-
-
   },
-
-  inputContainer:{
-    borderWidth:1,
+  inputContainer: {
+    borderWidth: 1,
     borderColor: colors.secondary,
     borderRadius: 10,
     marginLeft: 20,
@@ -182,82 +172,67 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 5,
-
-
   },
-
-  textInput:{
-    flex:1,
-    paddingHorizontal:10,
+  textInput: {
+    flex: 1,
+    paddingHorizontal: 10,
     fontFamily: fonts.Light,
   },
-
-  forgetText:{
-    textAlign:"right",
-    color: colors.primary,
-    fontFamily: fonts.SemiBold,
-    marginVertical: 5,
-  },
-
-  loginButton:{
+  loginButton: {
     backgroundColor: colors.primary,
-    borderRadius:100,
+    borderRadius: 100,
     marginLeft: 20,
     width: "90%",
     marginTop: 10,
   },
-
-  loginText:{
-    color:colors.white,
+  loginText: {
+    color: colors.white,
     fontSize: 18,
     fontFamily: fonts.SemiBold,
     textAlign: "center",
     padding: 10,
   },
-
-  continueText:{
+  continueText: {
     textAlign: "center",
     marginVertical: 10,
     fontSize: 12,
     fontFamily: fonts.Regular,
-    color: colors.primary
+    color: colors.primary,
   },
-
-  googleText:{
+  googleText: {
     fontSize: 15,
     fontFamily: fonts.SemiBold,
-    
   },
-
-  googleButton:{
+  googleButton: {
     flexDirection: "row",
     borderWidth: 2,
     borderColor: colors.primary,
     marginLeft: 20,
     width: "90%",
-    borderRadius:100,
+    borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
     padding: 5,
-    gap: 10
+    gap: 10,
   },
-
-  footerContainer:{
-    flexDirection:"row",
+  footerContainer: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 20,
     gap: 5,
   },
-
-  accountText:{
-    color:  colors.primary,
+  accountText: {
+    color: colors.primary,
     fontFamily: fonts.Regular,
   },
-
-  signupText:{
-    color:  colors.primary,
+  signupText: {
+    color: colors.primary,
     fontFamily: fonts.Bold,
   },
-
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginLeft: 20,
+  },
 });
