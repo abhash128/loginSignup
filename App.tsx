@@ -6,6 +6,7 @@ import HomeScreen from './src/screen/HomeScreen';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import LogInScreen from './src/screen/LogInScreen';
 import SignUpScreen from './src/screen/SignUpScreen';
+import SignatureScreen from './src/screen/SignatureScreen';
 
 
 
@@ -22,6 +23,8 @@ const App = () => {
         <Stack.Screen name={"Home"} component= {HomeScreen} />
         <Stack.Screen name={"LogIn"} component= {LogInScreen} />
         <Stack.Screen name={"SignUp"} component= {SignUpScreen} />
+        <Stack.Screen name={"SignatureScreen"} component= {SignatureScreen} />
+
 
 
         

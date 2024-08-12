@@ -15,6 +15,10 @@ const HomeScreen = () => {
     navigation.navigate("SignUp");
   };
 
+  const handleSignatureScreen = () => {
+    navigation.navigate("SignatureScreen");
+  };
+
   return (
     <View style={styles.container}>
       <Image source={require("../assets/logo.png")} style={styles.logo} />
@@ -37,6 +41,14 @@ const HomeScreen = () => {
             Sign-Up
           </Text>
         </TouchableOpacity>
+
+      </View>
+
+      <View style={styles.footerContainer}>
+          
+          <TouchableOpacity onPress={handleSignatureScreen}>
+            <Text style={styles.signupText}>Signature</Text>
+          </TouchableOpacity>
 
       </View>
 
@@ -103,6 +115,13 @@ const styles = StyleSheet.create({
   SignUpButtonText:{
     fontFamily: fonts.SemiBold,
     fontSize: 18,
+  },
+
+  footerContainer:{
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    gap: 5,
   },
 
 
