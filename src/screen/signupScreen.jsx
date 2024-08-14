@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Formik } from 'formik';
@@ -10,13 +10,14 @@ import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 
 
+
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
   const [countryCode, setCountryCode] = useState('+1'); // Default country code
+ 
   const [isPickerVisible, setPickerVisible] = useState(false); // Visibility of country picker
-
-
+  
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -24,6 +25,12 @@ const SignUpScreen = () => {
   const handleLogIn = () => {
     navigation.navigate("LogIn");
   };
+
+  const handlePhoneVerificationURL = () => {
+    navigation.navigate('PhoneAuthWebView');
+  };
+
+  
 
   // Define validation schema using Yup
   
@@ -48,6 +55,8 @@ const SignUpScreen = () => {
       .matches(/[\W_]/, 'Password must contain at least one special character')
       .required('Password is required'),
   });
+
+
 
   return (
     <ScrollView contentContainerStyle= {styles.scrollContainer}>
@@ -128,7 +137,12 @@ const SignUpScreen = () => {
                 onChangeText={handleChange('phone')}
                 onBlur={handleBlur('phone')}
                 value={values.phone}
+                //onChangeText={(text) => setPhoneNumber(text)}
               />
+
+              <TouchableOpacity onPress={handlePhoneVerificationURL}>
+                <Ionicons name={"checkmark-circle-sharp"} size={20} color={colors.secondary}/>
+              </TouchableOpacity>
             </View>
             {touched.phone && errors.phone && (
               <Text style={styles.errorText}>{errors.phone}</Text>
@@ -141,6 +155,7 @@ const SignUpScreen = () => {
                 setPickerVisible(false);
               }}
             />
+
 
             <View style={styles.inputContainer}>
               <Ionicons name={"mail-outline"} size={25} color={colors.secondary} />
