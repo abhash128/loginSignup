@@ -247,4 +247,10 @@ const LogInScreen = () => {
         fontFamily: fonts.Bold,
   },
 
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginLeft: 20,
+  },
+
 });

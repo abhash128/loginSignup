@@ -7,6 +7,7 @@ import { Header } from 'react-native/Libraries/NewAppScreen';
 import LogInScreen from './src/screen/LogInScreen';
 import SignUpScreen from './src/screen/SignUpScreen';
 import SignatureScreen from './src/screen/SignatureScreen';
+import OnboardingScreen from './src/screen/OnboardingScreen';
 
 
 
@@ -18,8 +19,10 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false,}}>
+      <Stack.Navigator initialRouteName="OnboardingScreen"
+        screenOptions={{headerShown: false,}}>
 
+        <Stack.Screen name={"OnboardingScreen"} component= {OnboardingScreen} />
         <Stack.Screen name={"Home"} component= {HomeScreen} />
         <Stack.Screen name={"LogIn"} component= {LogInScreen} />
         <Stack.Screen name={"SignUp"} component= {SignUpScreen} />

@@ -1,11 +1,12 @@
-import { StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { colors } from '../utils/colors';
-import {fonts} from '../utils/fonts';
-import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import CountryPicker from 'react-native-country-codes-picker';
+import { colors } from '../utils/colors';
+import { fonts } from '../utils/fonts';
+import { useNavigation } from '@react-navigation/native';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -235,4 +236,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 20,
   },
+  
+
 });
