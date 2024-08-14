@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import CountryPicker from 'react-native-country-codes-picker';
+import {CountryPicker} from "react-native-country-codes-picker";
 import { colors } from '../utils/colors';
 import { fonts } from '../utils/fonts';
 import { useNavigation } from '@react-navigation/native';
+import { Picker } from '@react-native-picker/picker';
+
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
+  const [countryCode, setCountryCode] = useState('+1'); // Default country code
+  const [isPickerVisible, setPickerVisible] = useState(false); // Visibility of country picker
+
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -21,19 +26,31 @@ const SignUpScreen = () => {
   };
 
   // Define validation schema using Yup
+  
+  // Validation schema
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('Invalid email address')
-      .required('Email is required'),
+    name: Yup.string()
+      .required('Name is required'),
+    gender: Yup.string()
+      .oneOf(['Male', 'Female', 'Others'], 'Invalid gender selection')
+      .required('Gender is required'),
     phone: Yup.string()
       .matches(/^\d{10}$/, 'Phone number is not valid')
       .required('Phone number is required'),
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
     password: Yup.string()
-      .min(6, 'Password must be at least 6 characters')
+      .min(8, 'Password must be at least 8 characters')
+      .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .matches(/\d/, 'Password must contain at least one number')
+      .matches(/[\W_]/, 'Password must contain at least one special character')
       .required('Password is required'),
   });
 
   return (
+    <ScrollView contentContainerStyle= {styles.scrollContainer}>
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButtonWrapper} onPress={handleGoBack}>
         <Ionicons 
@@ -43,15 +60,13 @@ const SignUpScreen = () => {
         />
       </TouchableOpacity>
 
-      {/* Text */}
       <View style={styles.textContainer}>
         <Text style={styles.headingText}>Let's Get</Text>
         <Text style={styles.headingText}>Started</Text>
       </View>
 
-      {/* Form */}
       <Formik
-        initialValues={{ email: '', phone: '', password: '' }}
+        initialValues={{ name: '', gender: '', phone: '', email: '', password: '' }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
           // Handle sign up logic here
@@ -60,6 +75,73 @@ const SignUpScreen = () => {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <Ionicons name={"person-outline"} size={25} color={colors.secondary} />
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your Name"
+                placeholderTextColor={colors.secondary}
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+                value={values.name}
+              />
+            </View>
+            {touched.name && errors.name && (
+              <Text style={styles.errorText}>{errors.name}</Text>
+            )}
+
+            <View style={styles.inputContainer}>
+              <Ionicons name={"transgender-outline"} size={25} color={colors.secondary} />
+              <Picker
+                selectedValue={values.gender}
+                style={styles.textInput}
+                onValueChange={handleChange('gender')}
+              >
+                <Picker.Item label="Select Gender" value="" color={colors.secondary} />
+                <Picker.Item label="Male" value="Male" />
+                <Picker.Item label="Female" value="Female"  />
+                <Picker.Item label="Others" value="Others"  />
+              </Picker>
+            </View>
+            {touched.gender && errors.gender && (
+              <Text style={styles.errorText}>{errors.gender}</Text>
+            )}
+
+{/* Phone Input with Country Code Picker */}
+
+            <View style={styles.phoneInputContainer}>
+
+              <Ionicons name={"phone-portrait-outline"} size={25} color={colors.secondary} />
+              
+              <TouchableOpacity
+                style={styles.countryCodeContainer}
+                onPress={() => setPickerVisible(true)}
+              >
+                <Text style={styles.countryCodeText}>{countryCode}</Text>
+              </TouchableOpacity>
+             
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your Phone No"
+                placeholderTextColor={colors.secondary}
+                keyboardType="number-pad"
+                onChangeText={handleChange('phone')}
+                onBlur={handleBlur('phone')}
+                value={values.phone}
+              />
+            </View>
+            {touched.phone && errors.phone && (
+              <Text style={styles.errorText}>{errors.phone}</Text>
+            )}
+
+            <CountryPicker
+              show={isPickerVisible}
+              pickerButtonOnPress={(item) => {
+                setCountryCode(item.dial_code);
+                setPickerVisible(false);
+              }}
+            />
+
             <View style={styles.inputContainer}>
               <Ionicons name={"mail-outline"} size={25} color={colors.secondary} />
               <TextInput
@@ -74,22 +156,6 @@ const SignUpScreen = () => {
             </View>
             {touched.email && errors.email && (
               <Text style={styles.errorText}>{errors.email}</Text>
-            )}
-
-            <View style={styles.inputContainer}>
-              <Ionicons name={"phone-portrait-outline"} size={25} color={colors.secondary} />
-              <TextInput
-                style={styles.textInput}
-                placeholder="Enter your Phone No"
-                placeholderTextColor={colors.secondary}
-                keyboardType="number-pad"
-                onChangeText={handleChange('phone')}
-                onBlur={handleBlur('phone')}
-                value={values.phone}
-              />
-            </View>
-            {touched.phone && errors.phone && (
-              <Text style={styles.errorText}>{errors.phone}</Text>
             )}
 
             <View style={styles.inputContainer}>
@@ -111,7 +177,6 @@ const SignUpScreen = () => {
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
 
-            {/* Sign Up Button */}
             <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
               <Text style={styles.loginText}>Sign Up</Text>
             </TouchableOpacity>
@@ -133,12 +198,16 @@ const SignUpScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
 export default SignUpScreen;
 
 const styles = StyleSheet.create({
+  scrollContainer:{
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.white,
@@ -179,6 +248,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     fontFamily: fonts.Light,
   },
+
+  phoneInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.secondary,
+    borderRadius: 10,
+    marginLeft: 20,
+    width: "90%",
+    paddingHorizontal: 5,
+    marginVertical: 5,
+  },
+  countryCodeContainer: {
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.gray,
+    borderRadius: 10,
+    marginRight: 10,
+  },
+  countryCodeText: {
+    color: colors.primary,
+    fontFamily: fonts.Regular,
+  },
+
   loginButton: {
     backgroundColor: colors.primary,
     borderRadius: 100,
@@ -236,6 +330,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 20,
   },
-  
-
 });
