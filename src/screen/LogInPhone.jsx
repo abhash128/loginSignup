@@ -7,9 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const LogInScreen = () => {
+const LogInPhone = () => {
   const navigation = useNavigation();
-  const [secureEntry, setSecureEntry] = useState(true);
+  const [isPasswordShown, setisPasswordShown] = useState(true);
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -20,7 +20,7 @@ const LogInScreen = () => {
   };
 
   const handleLogIn = () => {
-    navigation.navigate("LogInPhone")
+    navigation.navigate("LogIn")
   };
 
 
@@ -69,7 +69,7 @@ const LogInScreen = () => {
               <Ionicons name={"mail-outline"} size={25} color={colors.secondary} />
               <TextInput
                 style={styles.textInput}
-                placeholder="Enter your E-Mail"
+                placeholder="Enter your Phone Number"
                 placeholderTextColor={colors.secondary}
                 keyboardType="email-address"
                 onChangeText={handleChange('email')}
@@ -87,13 +87,22 @@ const LogInScreen = () => {
                 style={styles.textInput}
                 placeholder="Enter your Password"
                 placeholderTextColor={colors.secondary}
-                secureTextEntry={secureEntry}
+                secureTextEntry={isPasswordShown}
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
                 value={values.password}
               />
-              <TouchableOpacity onPress={() => setSecureEntry((prev) => !prev)}>
-                <Ionicons name={"eye"} size={20} color={colors.secondary} />
+              <TouchableOpacity onPress={() => setisPasswordShown(!isPasswordShown)}>
+                {
+                    isPasswordShown == false ? (
+                        <Ionicons name={"eye-off"} size={20} color={colors.secondary} />
+
+         ) : (
+                        <Ionicons name={"eye"} size={20} color={colors.secondary} />
+
+         )
+                }
+                {/* <Ionicons name={"eye-"} size={20} color={colors.secondary} /> */}
               </TouchableOpacity>
             </View>
             {touched.password && errors.password && (
@@ -114,7 +123,7 @@ const LogInScreen = () => {
 
       <TouchableOpacity style={styles.logInPhoneButton} onPress={handleLogIn}>
         {/* <Ionicons name={"logo-google"} size={20} color={colors.primary} /> */}
-        <Text style={styles.googleText}>or LogIn with Phone Number</Text>
+        <Text style={styles.googleText}>or LogIn with E-Mail</Text>
       </TouchableOpacity>
 
       <Text style={styles.continueText}>or continue with</Text>
@@ -137,7 +146,7 @@ const LogInScreen = () => {
 
   
 
-        export default LogInScreen;
+        export default LogInPhone;
 
         const styles = StyleSheet.create({
           container: {
@@ -213,23 +222,7 @@ const LogInScreen = () => {
         fontFamily: fonts.SemiBold,
         textAlign: "center",
         padding: 10,
-
-      },
-
-        logInPhoneButton:{
-          flexDirection: "row",
-          borderWidth: 2,
-          borderColor: colors.primary,
-          marginLeft: 20,
-          marginTop: 20,
-          width: "90%",
-          borderRadius: 100,
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 5,
-          gap: 10
-    },
-
+  },
 
         continueText:{
           textAlign: "center",
@@ -257,6 +250,20 @@ const LogInScreen = () => {
         padding: 5,
         gap: 10
   },
+
+  logInPhoneButton:{
+      flexDirection: "row",
+      borderWidth: 2,
+      borderColor: colors.primary,
+      marginLeft: 20,
+      marginTop: 20,
+      width: "90%",
+      borderRadius: 100,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 5,
+      gap: 10
+},
 
         footerContainer:{
           flexDirection:"row",

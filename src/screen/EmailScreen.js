@@ -1,10 +1,12 @@
+// EmailScreen.js
 import React from 'react';
-import { WebView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 const EmailScreen = () => {
   return (
     <WebView
-      source={{ uri: 'https://web.phone.email' }}
+      source={{uri: 'https://web.phone.email'}}
       originWhitelist={['*']}
       style={styles.webView}
     />

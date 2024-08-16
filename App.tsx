@@ -9,6 +9,8 @@ import SignUpScreen from './src/screen/SignUpScreen';
 import SignatureScreen from './src/screen/SignatureScreen';
 import OnboardingScreen from './src/screen/OnboardingScreen';
 import PhoneAuthWebView from './src/screen/PhoneAuthWebView';
+import EmailScreen from './src/screen/EmailScreen';
+import LogInPhone from './src/screen/LogInPhone';
 //import PhoneVerification from './src/screen/PhoneVerification';
 
 
@@ -30,6 +32,11 @@ const App = () => {
         <Stack.Screen name={"SignUp"} component= {SignUpScreen} />
         <Stack.Screen name={"SignatureScreen"} component= {SignatureScreen} />
         <Stack.Screen name="PhoneAuthWebView" component={PhoneAuthWebView} />
+        <Stack.Screen name="Email" component={EmailScreen} />
+        <Stack.Screen name={"LogInPhone"} component= {LogInPhone} />
+
+        
+
 
 
 

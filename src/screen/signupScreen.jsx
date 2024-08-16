@@ -8,6 +8,7 @@ import { colors } from '../utils/colors';
 import { fonts } from '../utils/fonts';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
+import axios from 'axios';
 
 
 
@@ -15,7 +16,10 @@ const SignUpScreen = () => {
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
   const [countryCode, setCountryCode] = useState('+1'); // Default country code
- 
+  const [unreadCount, setUnreadCount] = useState(0);
+  const token = 'your_jwt_token_here'; // Replace with the actual JWT token
+  const [emailToken, setEmailToken] = useState(''); // To store token received after email verification
+
   const [isPickerVisible, setPickerVisible] = useState(false); // Visibility of country picker
   
   const handleGoBack = () => {
@@ -28,6 +32,50 @@ const SignUpScreen = () => {
 
   const handlePhoneVerificationURL = () => {
     navigation.navigate('PhoneAuthWebView');
+  };
+
+  // const handleEmailVerificationURL = () => {
+  //   navigation.navigate('Email');
+  // };
+
+  const handleEmailVerificationURL = async () => {
+    // Replace this URL with your actual email verification endpoint
+    const verificationURL = 'https://www.phone.email/verify-email';
+
+    const dataToSend = new FormData();
+    dataToSend.append('email', values.email);
+
+    try {
+      const response = await axios.post(verificationURL, dataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: '*/*',
+        },
+      });
+      setEmailToken(response.data.token); // Store token received from API
+      fetchUnreadEmailCount(response.data.token);
+    } catch (error) {
+      console.error('Error verifying email:', error);
+    }
+  };
+
+    
+
+  const fetchUnreadEmailCount = async (token) => {
+    const dataToSend = new FormData();
+    dataToSend.append('merchant_phone_email_jwt', token);
+
+    try {
+      const response = await axios.post('https://eapi.phone.email/email-count', dataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: '*/*',
+        },
+      });
+      setUnreadCount(response.data);
+    } catch (error) {
+      console.error('Error making API request:', error);
+    }
   };
 
   
@@ -80,6 +128,7 @@ const SignUpScreen = () => {
         onSubmit={(values) => {
           // Handle sign up logic here
           console.log(values);
+          fetchUnreadEmailCount(token);
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -168,10 +217,24 @@ const SignUpScreen = () => {
                 onBlur={handleBlur('email')}
                 value={values.email}
               />
+              <TouchableOpacity onPress={handleEmailVerificationURL}>
+                <Ionicons name={"checkmark-circle-sharp"} size={20} color={colors.secondary}/>
+              </TouchableOpacity>
             </View>
             {touched.email && errors.email && (
               <Text style={styles.errorText}>{errors.email}</Text>
             )}
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => navigation.navigate('Email')}>
+                  <Ionicons name="mail-outline" size={20} color={colors.secondary} marginLeft={20} />
+                  {unreadCount > 0 && (
+                    <View style={styles.badge}>
+                      <Text style={styles.badgeText}>{unreadCount}</Text>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              </View>
 
             <View style={styles.inputContainer}>
               <Ionicons name={"lock-closed"} size={25} color={colors.secondary} />
@@ -345,4 +408,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 20,
   },
+
+  badge: { position: 'absolute', right: -10, top: -10, backgroundColor: 'red', borderRadius: 10, padding: 2 },
+  badgeText: { color: 'white', fontSize: 10 }
+
+  
 });
