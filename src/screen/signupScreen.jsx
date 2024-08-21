@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert} from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -9,12 +9,37 @@ import { fonts } from '../utils/fonts';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { signUpSuccess } from '../redux/slices/userSlice';
+import { allUsers } from '../redux/slices/userSlice';
+
 
 
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [secureEntry, setSecureEntry] = useState(true);
+
+  const handleSignUp = (values) => {
+    let data ={...allUsers, ...values};
+    dispatch(signUpSuccess(data));
+    Alert.alert("Success", "Sign up successful!");
+    console.log(values);
+    navigation.navigate('LogIn');
+    // const userData = {
+    //   name: values.name,
+    //   email: values.email,
+    //   phone: values.phone,
+    //   password: values.password,
+    // };
+
+    // // Dispatch signUpSuccess action to store the user's signup data
+    // dispatch(signUpSuccess(userData));
+  };
+
+  //const navigation = useNavigation();
+  //const [secureEntry, setSecureEntry] = useState(true);
   const [countryCode, setCountryCode] = useState('+1'); // Default country code
   const [unreadCount, setUnreadCount] = useState(0);
   const token = 'your_jwt_token_here'; // Replace with the actual JWT token
@@ -125,11 +150,12 @@ const SignUpScreen = () => {
       <Formik
         initialValues={{ name: '', gender: '', phone: '', email: '', password: '' }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          // Handle sign up logic here
-          console.log(values);
-          fetchUnreadEmailCount(token);
-        }}
+        onSubmit={handleSignUp}
+        // onSubmit={(values) => {
+        //   // Handle sign up logic here
+        //   console.log(values);
+        //   fetchUnreadEmailCount(token);
+        // }}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View style={styles.formContainer}>

@@ -11,6 +11,10 @@ import OnboardingScreen from './src/screen/OnboardingScreen';
 import PhoneAuthWebView from './src/screen/PhoneAuthWebView';
 import EmailScreen from './src/screen/EmailScreen';
 import LogInPhone from './src/screen/LogInPhone';
+import UserProfile from './src/screen/UserProfile';
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
+//import { UserProfile } from './src/redux/slices/userSlice';
 //import PhoneVerification from './src/screen/PhoneVerification';
 
 
@@ -22,30 +26,28 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="OnboardingScreen"
-        screenOptions={{headerShown: false,}}>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="OnboardingScreen"
+          screenOptions={{ headerShown: false, }}>
 
-        <Stack.Screen name={"OnboardingScreen"} component= {OnboardingScreen} />
-        <Stack.Screen name={"Home"} component= {HomeScreen} />
-        <Stack.Screen name={"LogIn"} component= {LogInScreen} />
-        <Stack.Screen name={"SignUp"} component= {SignUpScreen} />
-        <Stack.Screen name={"SignatureScreen"} component= {SignatureScreen} />
-        <Stack.Screen name="PhoneAuthWebView" component={PhoneAuthWebView} />
-        <Stack.Screen name="Email" component={EmailScreen} />
-        <Stack.Screen name={"LogInPhone"} component= {LogInPhone} />
-
-        
-
-
+          <Stack.Screen name={"OnboardingScreen"} component={OnboardingScreen} />
+          <Stack.Screen name={"Home"} component={HomeScreen} />
+          <Stack.Screen name={"LogIn"} component={LogInScreen} />
+          <Stack.Screen name={"SignUp"} component={SignUpScreen} />
+          <Stack.Screen name={"SignatureScreen"} component={SignatureScreen} />
+          <Stack.Screen name="PhoneAuthWebView" component={PhoneAuthWebView} />
+          <Stack.Screen name="Email" component={EmailScreen} />
+          <Stack.Screen name={"LogInPhone"} component={LogInPhone} />
+          <Stack.Screen name={"UserProfile"} component={UserProfile} />
 
 
 
-        
 
+        </Stack.Navigator>
+      </NavigationContainer>
 
-      </Stack.Navigator>
-    </NavigationContainer>
+    </Provider>
   );
 };
 

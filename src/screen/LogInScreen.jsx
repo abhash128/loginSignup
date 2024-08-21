@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View, Alert } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from '../utils/colors';
@@ -6,10 +6,19 @@ import { fonts } from '../utils/fonts';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess } from '../redux/slices/userSlice';
+import { allUsers } from '../redux/slices/userSlice';
+
+
 
 const LogInScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const allUsers = useSelector((state) => state.user.allUsers); // Get users from the Redux store
   const [secureEntry, setSecureEntry] = useState(true);
+
+  //const registeredUsers = useSelector(state => state.user.users);
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -19,8 +28,43 @@ const LogInScreen = () => {
     navigation.navigate("SignUp")
   };
 
-  const handleLogIn = () => {
+  const handleLogInPhone = () => {
     navigation.navigate("LogInPhone")
+  };
+
+  // const handleLoginSuccess = () => {
+  //   // Navigate to UserProfile screen
+  //   navigation.navigate('UserProfile');
+  // };
+
+  // const handleLogIn = (values) => {
+  //   // Simulating authentication (replace with actual authentication logic)
+  //   const userData = { email: values.email, name: 'Abhash Chauhan' };
+  //   dispatch(loginSuccess(userData));
+
+  //   // Navigate to home screen or dashboard after login
+  //   navigation.navigate('UserProfile');
+  // };
+
+  const handleLogIn = (values) => {
+    // Validate user credentials against the single user in allUsers
+    if (allUsers.email === values.email && allUsers.password === values.password) {
+      dispatch(loginSuccess(allUsers)); // Log in the user
+      navigation.navigate("UserProfile"); // Navigate to UserProfile
+
+    // const user = allUsers.find(
+    //   user => user.email === values.email && user.password === values.password
+    // );
+
+    // if (user) {
+    //   // Dispatch loginSuccess action if user is found
+    //   dispatch(loginSuccess(user));
+    //   navigation.navigate('UserProfile');
+    } else {
+      // Show an alert if credentials don't match
+      Alert.alert("Login Failed", "Invalid Email or Password");
+    }
+    //navigation.navigate('UserProfile');
   };
 
 
@@ -58,10 +102,7 @@ const LogInScreen = () => {
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          // Handle login logic here
-          console.log(values);
-        }}
+        onSubmit={handleLogIn} 
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View style={styles.formContainer}>
@@ -112,7 +153,7 @@ const LogInScreen = () => {
         )}
       </Formik>
 
-      <TouchableOpacity style={styles.logInPhoneButton} onPress={handleLogIn}>
+      <TouchableOpacity style={styles.logInPhoneButton} onPress={handleLogInPhone}>
         {/* <Ionicons name={"logo-google"} size={20} color={colors.primary} /> */}
         <Text style={styles.googleText}>or LogIn with Phone Number</Text>
       </TouchableOpacity>
@@ -134,10 +175,7 @@ const LogInScreen = () => {
   );
 };
 
-
-  
-
-        export default LogInScreen;
+export default LogInScreen;
 
         const styles = StyleSheet.create({
           container: {

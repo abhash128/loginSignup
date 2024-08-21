@@ -24,7 +24,7 @@ const PhoneAuthWebView = ({ navigation }) => {
 
   const handleWebViewMessage = (event) => {
     const encodedJWT = event.nativeEvent.data;
-    navigation.navigate('SignUp', { token: encodedJWT });
+    navigation.navigate('Email', { token: encodedJWT });
   };
 
   return (
