@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../redux/slices/userSlice';
 import { allUsers } from '../redux/slices/userSlice';
 
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+
 
 
 const LogInScreen = () => {
@@ -31,6 +34,38 @@ const LogInScreen = () => {
   const handleLogInPhone = () => {
     navigation.navigate("LogInPhone")
   };
+
+
+  // Function to handle Google Sign-In
+  const handleGoogleSignIn = async () => {
+    try {
+      // Get the user's ID token
+      const { idToken } = await GoogleSignin.signIn();
+
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign-in the user with the credential
+      const userCredential = await auth().signInWithCredential(googleCredential);
+
+      // Extract user data
+      const { user } = userCredential;
+
+      // Dispatch loginSuccess with user data
+      dispatch(loginSuccess({
+        name: user.displayName,
+        email: user.email,
+        phone: user.phoneNumber,
+        uid: user.uid,
+      }));
+
+    // Navigate to UserProfile
+    navigation.navigate('UserProfile');
+
+  } catch (error) {
+    console.error('Google Sign-In error:', error);
+  }
+};
 
   // const handleLoginSuccess = () => {
   //   // Navigate to UserProfile screen
@@ -160,7 +195,7 @@ const LogInScreen = () => {
 
       <Text style={styles.continueText}>or continue with</Text>
 
-      <TouchableOpacity style={styles.googleButton}>
+      <TouchableOpacity style={styles.googleButton} onPress={handleGoogleSignIn}>
         <Ionicons name={"logo-google"} size={20} color={colors.primary} />
         <Text style={styles.googleText}>Google</Text>
       </TouchableOpacity>

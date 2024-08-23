@@ -6,6 +6,7 @@ buildscript {
         targetSdkVersion = 34
         ndkVersion = "26.1.10909125"
         kotlinVersion = "1.9.22"
+        googlePlayServicesAuthVersion = "21.0.0" // <--- use this version or newer
     }
     repositories {
         google()
@@ -15,7 +16,18 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath 'com.google.gms:google-services:4.3.15'
+        //classpath 'com.google.gms:google-services:4.4.2' // <--- use this version or newer
     }
 }
 
 apply plugin: "com.facebook.react.rootproject"
+apply plugin: "com.google.gms.google-services"
+
+// plugins {
+//   // ...
+
+//   // Add the dependency for the Google services Gradle plugin
+//   id 'com.google.gms.google-services' version '4.4.2' apply false
+
+// }

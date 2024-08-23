@@ -18,7 +18,13 @@ import store from './src/redux/store';
 //import PhoneVerification from './src/screen/PhoneVerification';
 
 
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+
+// Initialize Google Sign-In
+GoogleSignin.configure({
+  webClientId: "1093604866230-70g5jaaavt65nkljpsp39vuvtmlspv1q.apps.googleusercontent.com", // Replace with your Firebase project's web client ID
+});
 
 
 
