@@ -24,7 +24,7 @@ const LogInScreen = () => {
   //const registeredUsers = useSelector(state => state.user.users);
 
   const handleGoBack = () => {
-    navigation.goBack();
+    navigation.navigate("Home");
   };
 
   const handleSignUp = () => {
@@ -60,7 +60,7 @@ const LogInScreen = () => {
       }));
 
     // Navigate to UserProfile
-    navigation.navigate('UserProfile');
+    navigation.navigate('Order');
 
   } catch (error) {
     console.error('Google Sign-In error:', error);
@@ -85,7 +85,7 @@ const LogInScreen = () => {
     // Validate user credentials against the single user in allUsers
     if (allUsers.email === values.email && allUsers.password === values.password) {
       dispatch(loginSuccess(allUsers)); // Log in the user
-      navigation.navigate("UserProfile"); // Navigate to UserProfile
+      navigation.navigate("Order"); // Navigate to UserProfile
 
     // const user = allUsers.find(
     //   user => user.email === values.email && user.password === values.password

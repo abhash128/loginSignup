@@ -20,15 +20,15 @@ const LogInPhone = () => {
   };
 
   const handleLogIn = () => {
-    navigation.navigate("LogIn")
+    navigation.navigate("UserProfile")
   };
 
 
   // Define validation schema using Yup
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .email('Invalid email address')
-      .required('Email is required'),
+      .email('Invalid Phone no')
+      .required('Phone No is required'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
       .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')

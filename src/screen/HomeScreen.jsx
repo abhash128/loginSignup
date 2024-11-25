@@ -4,6 +4,7 @@ import { colors } from '../utils/colors' ;
 import {fonts} from '../utils/fonts';
 import { useNavigation } from '@react-navigation/native';
 
+
 const HomeScreen = () => {
   const navigation = useNavigation();
 
@@ -16,7 +17,11 @@ const HomeScreen = () => {
   };
 
   const handleSignatureScreen = () => {
-    navigation.navigate("SignatureScreen");
+    navigation.navigate("LogInScr");
+    //navigation.navigate("Module");
+
+    //navigation.navigate("AppData");
+    //navigation.navigate("SignatureScreen");
   };
 
   return (
@@ -47,7 +52,7 @@ const HomeScreen = () => {
       <View style={styles.footerContainer}>
           
           <TouchableOpacity onPress={handleSignatureScreen}>
-            <Text style={styles.signupText}>Signature</Text>
+            <Text style={styles.signupText}>Handle Module</Text>
           </TouchableOpacity>
 
       </View>
